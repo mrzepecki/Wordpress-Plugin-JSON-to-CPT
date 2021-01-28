@@ -140,21 +140,31 @@ function update_json_to_cpt()
 		$gender    = $developer->gender;
 		$ip_address    = $developer->ip_address;
 
+
 		$new_post = array(
-			'ID' => $id,
-			'post_title'  => $first_name . ' ' . $last_name,
+			'post_title'  => $id,
 			'post_status' => 'publish',
 			'post_type'   => 'developers',
 		);
 
-		$post_id = wp_insert_post($new_post);
+		$id_of_found_post = post_exists($id);
 
-		update_field('id', $id, $post_id);
-		update_field('first_name', $first_name, $post_id);
-		update_field('last_name', $last_name, $post_id);
-		update_field('email', $email, $post_id);
-		update_field('gender', $gender, $post_id);
-		update_field('ip_address', $ip_address, $post_id);
+		if ($id_of_found_post == 0) {
+			$post_id = wp_insert_post($new_post);
+			update_field('id', $id, $post_id);
+			update_field('first_name', $first_name, $post_id);
+			update_field('last_name', $last_name, $post_id);
+			update_field('email', $email, $post_id);
+			update_field('gender', $gender, $post_id);
+			update_field('ip_address', $ip_address, $post_id);
+		} else {
+			update_field('id', $id, $id_of_found_post);
+			update_field('first_name', $first_name, $id_of_found_post);
+			update_field('last_name', $last_name, $id_of_found_post);
+			update_field('email', $email, $id_of_found_post);
+			update_field('gender', $gender, $id_of_found_post);
+			update_field('ip_address', $ip_address, $id_of_found_post);
+		}
 	}
 
 	echo '<div id="message" class="updated fade"><p>'
@@ -215,6 +225,7 @@ function json_to_cpt_button_admin_page()
 	echo '<h2>JSON to CPT</h2>';
 	echo '<p>Plik developers.json znajduje się w katalogu <strong>' . plugin_dir_path(__FILE__) . 'json/ </strong></p>';
 	echo '<p>Aby zaaktualizować dane, nadpisz ten plik i naciśnij przycisk Update JSON to CPT.</p>';
+	echo '<p>Skorzystaj z WP CLI wpisując komendę <strong>wp update-json-to-cpt</strong></p>';
 
 
 	if (isset($_POST['update_json_to_cpt_button']) && check_admin_referer('update_json_to_cpt_clicked')) {

@@ -194,7 +194,6 @@ function my_acf_init_block_types()
 			'title'             => __('Developers list'),
 			'description'       => __('A list with developers CPT items.'),
 			'render_template'   => plugin_dir_path(__FILE__) . 'acf/developers-list.php',
-			'enqueue_style'     => plugin_dir_path(__FILE__) . 'acf/developers-list.css',
 			'category'          => 'formatting',
 			'icon'              => 'admin-comments',
 			'keywords'          => array('developers', 'list'),
